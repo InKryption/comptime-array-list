@@ -52,7 +52,6 @@ pub fn ComptimeArrayList(comptime T: type) type {
             comptime {
                 const after_range = start + len;
                 const rangle_len = after_range - start;
-                // const range = self.items[start..after_range];
 
                 if (rangle_len == new_items.len) {
                     self.setRangeToSlice(start, new_items);
@@ -62,18 +61,14 @@ pub fn ComptimeArrayList(comptime T: type) type {
 
                     self.setRangeToSlice(start, first);
                     self.insertSlice(after_range, rest);
-                    unreachable;
                 } else {
-                    // std.mem.copy(T, range, new_items);
                     self.setRangeToSlice(start, new_items);
                     const after_subrange = start + new_items.len;
 
                     for (self.items[after_range..]) |item, i| {
-                        // self.items[after_subrange..][i] = item;
                         self.set(after_subrange + i, item);
                     }
 
-                    // self.items.len -= len - new_items.len;
                     self.resize(self.items.len - (len - new_items.len));
                 }
             }
