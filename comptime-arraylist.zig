@@ -95,6 +95,13 @@ pub fn ComptimeArrayList(comptime T: type) type {
                 return result;
             }
         }
+        
+        pub inline fn popOrNull(comptime self: *Self) ?T {
+            comptime {
+                if (self.items.len == 0) return null;
+                return self.pop();
+            }
+        }
 
         inline fn array(comptime self: *Self) *const [self.items.len]T {
             return comptime self.items[0..self.items.len];
@@ -124,4 +131,9 @@ test {
         comptime comptime_str.pop(),
     );
     try std.testing.expectEqualStrings(runtime_str.items, comptime_str.items);
+    
+    try std.testing.expectEqual(
+        runtime_str.popOrNull(),
+        comptime comptime_str.popOrNull(),
+    );
 }
