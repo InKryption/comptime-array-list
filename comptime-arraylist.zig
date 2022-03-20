@@ -95,7 +95,7 @@ pub fn ComptimeArrayList(comptime T: type) type {
                 return result;
             }
         }
-        
+
         pub inline fn popOrNull(comptime self: *Self) ?T {
             comptime {
                 if (self.items.len == 0) return null;
@@ -126,14 +126,9 @@ test {
     try runtime_str.replaceRange(4, 3, "foo");
     try std.testing.expectEqualStrings(runtime_str.items, comptime_str.items);
 
-    try std.testing.expectEqual(
-        runtime_str.pop(),
-        comptime comptime_str.pop(),
-    );
+    try std.testing.expectEqual(runtime_str.pop(), comptime comptime_str.pop());
     try std.testing.expectEqualStrings(runtime_str.items, comptime_str.items);
-    
-    try std.testing.expectEqual(
-        runtime_str.popOrNull(),
-        comptime comptime_str.popOrNull(),
-    );
+
+    try std.testing.expectEqual(runtime_str.popOrNull(), comptime comptime_str.popOrNull());
+    try std.testing.expectEqualStrings(runtime_str.items, comptime_str.items);
 }
