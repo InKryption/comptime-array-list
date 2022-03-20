@@ -22,15 +22,22 @@ pub fn ComptimeArrayList(comptime T: type) type {
         }
 
         pub inline fn setRangeToSlice(comptime self: *Self, comptime start: usize, comptime slice: []const T) void {
-            comptime self.items = self.array()[0..start] ++ slice ++ self.array()[start + slice.len ..];
+            comptime self.items =
+                self.array()[0..start] ++
+                slice ++
+                self.array()[start + slice.len ..];
         }
 
         pub inline fn append(comptime self: *Self, comptime value: T) void {
-            comptime self.items = self.items ++ &[_]T{value};
+            comptime self.items =
+                self.items ++
+                &[_]T{value};
         }
 
         pub inline fn appendSlice(comptime self: *Self, comptime slice: []const T) void {
-            comptime self.items = self.items ++ slice;
+            comptime self.items =
+                self.items ++
+                slice;
         }
 
         pub inline fn resize(comptime self: *Self, comptime new_size: usize) void {
@@ -41,11 +48,17 @@ pub fn ComptimeArrayList(comptime T: type) type {
         }
 
         pub inline fn insert(comptime self: *Self, comptime index: usize, comptime value: T) void {
-            comptime self.items = self.items[0..index] ++ &[_]T{value} ++ self.items[index..];
+            comptime self.items =
+                self.items[0..index] ++
+                &[_]T{value} ++
+                self.items[index..];
         }
 
         pub inline fn insertSlice(comptime self: *Self, comptime index: usize, comptime slice: []const T) void {
-            comptime self.items = self.items[0..index] ++ slice[0..slice.len] ++ self.items[index..];
+            comptime self.items =
+                self.items[0..index] ++
+                slice[0..slice.len] ++
+                self.items[index..];
         }
 
         pub inline fn replaceRange(comptime self: *Self, comptime start: usize, comptime len: usize, comptime new_items: []const T) void {
@@ -53,9 +66,9 @@ pub fn ComptimeArrayList(comptime T: type) type {
                 const after_range = start + len;
                 const rangle_len = after_range - start;
 
-                if (rangle_len == new_items.len) {
-                    self.setRangeToSlice(start, new_items);
-                } else if (rangle_len < new_items.len) {
+                if (rangle_len == new_items.len)
+                    self.setRangeToSlice(start, new_items)
+                else if (rangle_len < new_items.len) {
                     const first = new_items[0..rangle_len];
                     const rest = new_items[rangle_len..];
 
